@@ -1,0 +1,46 @@
+{% extends "main_layout.html" %}
+{% block title %}
+Make Post
+{% endblock %}
+{% block body %}
+<div class="make-post-form">
+    <div class="make-post-title">
+        <h1>Make Post</h1>
+    </div>
+
+    <form method="post" action="{% url 'make_post' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="activity_name" required>
+            <option selected>Choose the activity you want to post for</option>
+            {% for act in activities %}
+            <option value="{{act.activity_name}}">{{act.activity_name}}</option>
+            {% endfor %}
+        </select>
+        
+    
+        <div class="input-group">
+            <span class="input-group-text">Share your experience with us</span>
+            <textarea rows="10" class="form-control" aria-label="With textarea" name="post-text" required></textarea>
+        </div>
+        <div class="input-group mt-4">
+            <input type="file" required class="form-control" name="post-image" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload" onchange="previewImage(event)">
+        </div>
+        <div class="preview-image-container">
+            <img id="preview-image">
+        </div>
+       
+        <div class="input-group post-button mt-4">
+            <button class="btn btn-primary" type="submit">Post</button>
+        </div>
+    </form>
+</div>
+<script>
+const previewImage = (event) => {
+    console.log("uploaded image")
+    const previewImage = document.querySelector('#preview-image')
+    const image = event.target.files
+    const imgSrc = URL.createObjectURL(image[0])
+    previewImage.src = imgSrc
+}
+</script>
+{% endblock %}

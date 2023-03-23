@@ -1,0 +1,52 @@
+{% extends 'main_layout.html' %}
+{% block title %}
+Get Activity
+{% endblock %}
+{% block body %}
+{% if message %}
+<script>
+    alert("Successfully added activity. Make sure you post some photo or video after doing that :)");
+</script>
+{% endif %}
+<div class="get-activity-page-title">
+    <h2>Welcome to Get Activity Page</h2>
+</div>
+<div class="get-activity">
+    <button class="get-activity-button">Get Activity</button>
+</div>
+<div class="the-activity">
+    <div>
+        <h1 class="activity mt-5"></h1>
+    </div>
+    <div>
+        <form method="POST" action="{% url 'get_activity' %}">
+            {% csrf_token %}
+            <input type="text" hidden="true" name="activity" id="activity-input">
+            <input hidden="true" type="submit" value="Get this activity" id="activity-submit">
+        </form>
+    </div>
+   
+</div>
+
+
+<script>
+    const button = document.querySelector('.get-activity-button')
+    button.addEventListener('click', ()=>{
+        button.style.animationPlayState = "running";
+    
+
+        fetch('https://www.boredapi.com/api/activity/')
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            const h1 = document.querySelector('.activity')
+            document.querySelector('#activity-input').value = data.activity;
+            h1.innerHTML = data.activity;
+            document.querySelector('#activity-submit').hidden = false;
+
+        })
+        .catch(error => console.log(error))
+    })
+</script>
+
+{% endblock %}
